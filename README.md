@@ -13,3 +13,6 @@ Decisions about standards
 
 - Keyword order. Apart from including the timestamp at the start, we decide not to sort the keywords as the only advantage is that the file name is slightly more predictible. When we have control over the order however, we can put more important information nearer the start. This is convenient because it means we do not need to expand the file name tab to see information we commonly want to see. For example, it is a common situation to be in a folder where all the values of a particular keyword are the same, so these keyword-value pair can be hidden from view. We also note that it will be very easy and computationally cheap to extract all the keyword-value pairs into a dictionary and the required keyword can be looked up. This means we do not need the keywords to be in any particular order.
 - As noted before, having key information near the start of the file name is useful. For this reason, we decide to shorten "TimeStamp" to "T".
+
+## Folder Structure
+
