@@ -62,4 +62,5 @@ def get_file_name(input_dict, **kwargs):
     return file_name_obj.file_name
 
 def read_file_name(file_name):
-    return dict(item.split("_")[:2] for item in os.path.splitext(file_name)[0].split("__"))
+    data = dict(item.split("_")[:2] for item in os.path.splitext(file_name)[0].split("__"))
+    return {key: float(value) for key, value in data.items()}

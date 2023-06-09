@@ -4,6 +4,6 @@
   "sweep_points": 100,
   "attempt_count_limit": 4,
   "target_resolution": 10,
-  "contraction_ratio": 0.1,
+  "contraction_ratio": 0.3,
   "plot_results": false
 }

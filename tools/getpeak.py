@@ -64,16 +64,31 @@ class GetPeak():
         if self.plot_results:
             line_obj = plotting.line(frequencies, values)
             peak_point = plotting.line(self.peak_frequency, self.peak_value, marker="*", color="r")
-            lines_obj = plotting.lines([line_obj, peak_point])
+            kwargs = self.get_kwargs()
+            lines_obj = plotting.lines([line_obj, peak_point], **kwargs)
             self.lines_objects.append(lines_obj)
+
+    def get_kwargs(self):
+        title = self.get_title()
+        kwargs = {"title": title, "x_label": "Frequency", "y_label": "Amplitude"}
+        return kwargs
+
+    def get_title(self):
+        title = (f"Sweep {self.attempt_counter + 1}, "
+                 f"Range = {round(self.start)} - {round(self.end)}, "
+                 f"Width = {round(self.end - self.start)}")
+        return title
 
     def plot(self):
         if self.plot_results:
-            plotting.create_figures(self.lines_objects,
+            plotting.create_figures(self.lines_objects, title="Finding Peak",
                                     maximise=False, output=False)
-            mng = get_current_fig_manager()
-            mng.full_screen_toggle()
-            plt.show()
+            self.set_figure_size()
+
+    def set_figure_size(self):
+        mng = get_current_fig_manager()
+        mng.full_screen_toggle()
+        plt.show()
 
 defaults.load(GetPeak)
 
