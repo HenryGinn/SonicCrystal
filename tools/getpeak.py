@@ -5,11 +5,16 @@ around that point. This process is then repeated until
 the desired resolution is reached
 """
 
+import os
+
 from hgutilities import defaults
 from hgutilities import plotting
+from hgutilities.utils.paths import make_folder
 import numpy as np
 from matplotlib.pyplot import get_current_fig_manager
 import matplotlib.pyplot as plt
+
+from .files import save_to_path
 
 class GetPeak():
 
@@ -17,6 +22,7 @@ class GetPeak():
         defaults.kwargs(self, kwargs)
         self.update_window_attributes()
         self.lines_objects = []
+        self.create_folder()
 
     def find_peak(self):
         self.attempt_counter = 0
@@ -29,6 +35,11 @@ class GetPeak():
         self.sweep_width = self.end - self.start
         self.sweep_resolution = self.sweep_width / self.sweep_points
 
+    def create_folder(self):
+        if self.save_results:
+            self.path = os.path.join(self.base_path, "FindingPeak")
+            make_folder(self.path)
+
     def run_find_peak_loop(self):
         if self.attempt_counter == 0:
             return True
@@ -38,9 +49,10 @@ class GetPeak():
             return False
 
     def iterate(self):
-        frequencies, values = self.run_sweep()
-        self.update_peak_window(frequencies, values)
-        self.add_lines_obj(frequencies, values)
+        self.frequencies, self.values = self.run_sweep()
+        self.update_peak_window()
+        self.add_lines_obj()
+        self.save()
         self.attempt_counter += 1
 
     def run_sweep(self):
@@ -51,18 +63,18 @@ class GetPeak():
         function_values += noise
         return frequencies, function_values
 
-    def update_peak_window(self, frequencies, values):
-        peak_index = np.argmax(values)
-        self.peak_value = values[peak_index]
-        self.peak_frequency = frequencies[peak_index]
+    def update_peak_window(self):
+        peak_index = np.argmax(self.values)
+        self.peak_value = self.values[peak_index]
+        self.peak_frequency = self.frequencies[peak_index]
         half_width = self.sweep_width * self.contraction_ratio / 2
         self.start = self.peak_frequency - half_width
         self.end = self.peak_frequency + half_width
         self.update_window_attributes()
 
-    def add_lines_obj(self, frequencies, values):
+    def add_lines_obj(self):
         if self.plot_results:
-            line_obj = plotting.line(frequencies, values)
+            line_obj = plotting.line(self.frequencies, self.values)
             peak_point = plotting.line(self.peak_frequency, self.peak_value, marker="*", color="r")
             kwargs = self.get_kwargs()
             lines_obj = plotting.lines([line_obj, peak_point], **kwargs)
@@ -89,6 +101,13 @@ class GetPeak():
         mng = get_current_fig_manager()
         mng.full_screen_toggle()
         plt.show()
+
+    def save(self):
+        if self.save_results:
+            results = {"frequency (Hz)": self.frequencies,
+                       "Amplitude": self.values}
+            path = os.path.join(self.path, f"Sweep_{self.attempt_counter + 1}.txt")
+            save_to_path(path, results)
 
 defaults.load(GetPeak)
 

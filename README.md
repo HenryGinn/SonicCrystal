@@ -4,7 +4,7 @@ A set of programs used to interact with the devices that work with the cryostat
 1. [File Naming System](#file-naming-system)
 1. [Reading and Writing to Files](#reading-and-writing-to-files)
 1. [Peak Finder](#peak-finder)
-1. [Folder Structure](#folder-structure)
+1. [Run Experiment](#run-experiment)
 
 ## File Naming System
 
@@ -64,16 +64,50 @@ skip_first_n: if the first several lines have comments that are not part of the 
 
 ## Peak Finder
 
-This will run a sweep over a wide region, identify where the peak is, and then run a sweep over a small region around the peak to get a more precise measurement. This process is repeated until the desired resolution is reached, or the maximum number of iterations is reached. If the keyword argument `plot_results=True` is given then all of the attempts are plotted.
+This will run a sweep over a wide region, identify where the peak is, and then run a sweep over a small region around the peak to get a more precise measurement. This process is repeated until the desired resolution is reached, or the maximum number of iterations is reached. If the keyword argument `plot_results=True` is given then all of the attempts are plotted. If the keyword argument `save_data=True` is passed in then the data will be saved in a folder called "FindingPeak". The location of this folder is set to be the capacitance experiment folder, but this should be changed by passing in a value to the `base_path` keyword argument.
 
-TODO: add functionality to save data.
+## Run Experiment
 
-## Folder Structure
+This tool is made so that the user can more easily prescribe what they want to happen during the experiment. The user can prescribe several layers of variables that need to be iterated through (like in a series of nested for loops), and this will be handled for them. The user specifies a folder structure and starts the experiment like so:
 
-The user will specify a folder structure like so:
+    from tools.runexperiment import run_experiment
 
     folder_structure = {"power": [24, 25],
-                        "trial": [1, 2, 3],
-                        "detuning": [0, 1, 2]}
+                        "trial": [1, 2],
+                        "detuning": [0, 1]}
 
-This means they want to iterate through the powers 24 and 25, and then at the next level down iterate through the trials, and so on, where each new level is in it's own folder. The will 
+    run_experiment(folder_structure)
+
+This will generate the following folder structure:
+
+├───power_24
+│   ├───trial_1
+│   │   ├───detuning_0
+│   │   └───detuning_1
+│   └───trial_2
+│       ├───detuning_0
+│       └───detuning_1
+└───power_25
+    ├───trial_1
+    │   ├───detuning_0
+    │   └───detuning_1
+    └───trial_2
+        ├───detuning_0
+        └───detuning_1
+
+It will also run a script which contains the details of what is meant to happen (this would be the code inside all the nested for loops). The variables that have been iterated through are set as global variables. Here is some example code along with it's output.
+
+    print(f"power: {power}, "
+        f"trial: {trial}, "
+        f"detuning: {detuning}")
+<!--Comment to separate code blocks-->
+    power: 24, trial: 1, detuning: 0
+    power: 24, trial: 1, detuning: 1
+    power: 24, trial: 2, detuning: 0
+    power: 24, trial: 2, detuning: 1
+    power: 25, trial: 1, detuning: 0
+    power: 25, trial: 1, detuning: 1
+    power: 25, trial: 2, detuning: 0
+    power: 25, trial: 2, detuning: 1
+
+The path to the folder that has been created will also be set as a global variable and is called "base_path". At the root of this folder tree is a folder with the date when the script is run in the format yyyy_mm_dd. This folder is within the "CapacitanceExperiment" folder inside "Experiments Data" folder. This can be changed by passing a path into the `run_experiment` function with the `base_path` keyword argument.

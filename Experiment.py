@@ -1,4 +1,3 @@
-print(f"power: {power}\n"
-      f"trial: {trial}\n"
-      f"detuning: {detuning}\n"
-      f"path: {base_path}\n")
+print(f"power: {power}, "
+      f"trial: {trial}, "
+      f"detuning: {detuning}")

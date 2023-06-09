@@ -5,5 +5,7 @@
   "attempt_count_limit": 4,
   "target_resolution": 10,
   "contraction_ratio": 0.3,
-  "plot_results": false
+  "plot_results": false,
+  "save_results": true,
+  "base_path": "D:\\Documents\\Experiments Data\\CapacitanceExperiment"
 }

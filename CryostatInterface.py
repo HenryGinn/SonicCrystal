@@ -22,7 +22,7 @@ print(a)
 
 
 from tools.getpeak import get_peak
-peak = get_peak(plot_results=True)
+peak = get_peak(plot_results=False)
 
 
 """
@@ -50,8 +50,8 @@ save_to_path(output_path, data_dict)
 from tools.runexperiment import run_experiment
 
 folder_structure = {"power": [24, 25],
-                    "trial": [1, 2, 3],
-                    "detuning": [0, 1, 2]}
+                    "trial": [1, 2],
+                    "detuning": [0, 1]}
 
 run_experiment(folder_structure)
 """
