@@ -6,13 +6,14 @@ the desired resolution is reached
 """
 
 import os
+import time
 
 from hgutilities import defaults
 from hgutilities import plotting
 from hgutilities.utils.paths import make_folder
 import numpy as np
-from matplotlib.pyplot import get_current_fig_manager
 import matplotlib.pyplot as plt
+import zhinst.core
 
 from .files import save_to_path
 
@@ -56,12 +57,49 @@ class GetPeak():
         self.attempt_counter += 1
 
     def run_sweep(self):
-        frequencies = np.arange(self.start, self.end, self.sweep_resolution)
-        a, b, c = 10**9, 10**6, 2.5*10**6
-        function_values = a / (b**2 + 4*(frequencies - c)**2)
-        noise = np.random.rand(self.sweep_points) * function_values / 20
-        function_values += noise
-        return frequencies, function_values
+        daq = zhinst.core.ziDAQServer('192.168.103.198', 8004, 6)
+        daq.setInt('/dev6641/imps/0/mode', 1) # 0: 4 terminal, 1: 2 terminal
+        daq.setInt('/dev6641/imps/0/model', 1) # The representation. 0: Rp || Cp, 1: Rs + Cs
+        sweeper = daq.sweep()
+        sweeper.set('device', 'dev6641') # The MFIA device
+        sweeper.set('xmapping', 0) # x axis mode: 0: linear, 1: log
+        sweeper.set('historylength', 100)
+        sweeper.set('settling/inaccuracy', 0.01)
+        sweeper.set('averaging/sample', 20)
+        sweeper.set('averaging/tc', 15)
+        sweeper.set('averaging/time', 0.1)
+        sweeper.set('bandwidth', 10)
+        sweeper.set('maxbandwidth', 100)
+        sweeper.set('bandwidthoverlap', 1)
+        sweeper.set('omegasuppression', 80)
+        sweeper.set('order', 8)
+        sweeper.set('gridnode', '/dev6641/oscs/0/freq')
+        sweeper.set('save/directory', 'D:\\Documents\\Zurich Instruments\\LabOne\\WebServer')
+        sweeper.set('averaging/sample', 20)
+        sweeper.set('averaging/tc', 15)
+        sweeper.set('averaging/time', 0.1)
+        sweeper.set('bandwidth', 10)
+        sweeper.set('bandwidthoverlap', 1)
+        sweeper.set('start', self.start)
+        sweeper.set('stop', self.end)
+        sweeper.set('maxbandwidth', 100)
+        sweeper.set('omegasuppression', 80)
+        sweeper.set('order', 8)
+        sweeper.set('samplecount', self.sweep_points)
+
+        sweeper.subscribe('/dev6641/imps/0/sample')
+        sweeper.execute()
+        while not sweeper.finished():
+            time.sleep(0.1)
+        time.sleep(0.1)
+        sweeper.finish()
+        sweeper.unsubscribe('*')
+
+        results = sweeper.read()
+        results = results["dev6641"]["imps"]["0"]["sample"][0][0]
+        frequencies = results["frequency"]
+        values = results["param1"]
+        return frequencies, values
 
     def update_peak_window(self):
         peak_index = np.argmax(self.values)
@@ -94,13 +132,7 @@ class GetPeak():
     def plot(self):
         if self.plot_results:
             plotting.create_figures(self.lines_objects, title="Finding Peak",
-                                    maximise=False, output=False)
-            self.set_figure_size()
-
-    def set_figure_size(self):
-        mng = get_current_fig_manager()
-        mng.full_screen_toggle()
-        plt.show()
+                                    aspect_ratio=self.aspect_ratio)
 
     def save(self):
         if self.save_results:

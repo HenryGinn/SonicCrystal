@@ -2,10 +2,11 @@
   "start": 1000,
   "end": 5000000,
   "sweep_points": 100,
-  "attempt_count_limit": 4,
-  "target_resolution": 10,
-  "contraction_ratio": 0.3,
+  "attempt_count_limit": 6,
+  "target_resolution": 0.1,
+  "contraction_ratio": 0.1,
   "plot_results": false,
   "save_results": true,
-  "base_path": "D:\\Documents\\Experiments Data\\CapacitanceExperiment"
+  "base_path": "D:\\Documents\\Experiments Data\\CapacitanceExperiment",
+  "aspect_ratio": 2
 }

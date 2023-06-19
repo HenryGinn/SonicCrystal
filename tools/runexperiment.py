@@ -6,9 +6,10 @@ from hgutilities.utils.paths import make_folder
 
 class RunExperiment():
 
-    def __init__(self, folder_structure, **kwargs):
+    def __init__(self, folder_structure, trial_number, **kwargs):
         defaults.kwargs(self, kwargs)
         self.folder_structure = folder_structure
+        self.trial_number = trial_number
         self.set_experiment_path()
         self.set_code()
         self.run_experiment()
@@ -33,6 +34,7 @@ class RunExperiment():
 
     def run_code(self, code_globals):
         code_globals["base_path"] = self.get_path(code_globals)
+        code_globals["trial_number"] = self.trial_number
         make_folder(code_globals["base_path"])
         exec(self.code, code_globals, {})
 
@@ -42,7 +44,6 @@ class RunExperiment():
                               for key, value in code_globals.items()
                               if key in self.folder_structure])
         return path
-        
 
     def prepare_next_recursion(self, depth, code_globals):
         key = list(self.folder_structure.keys())[depth]
@@ -52,5 +53,5 @@ class RunExperiment():
 
 defaults.load(RunExperiment)
 
-def run_experiment(*args, **kwargs):
-    run_experiment_obj = RunExperiment(*args, **kwargs)
+def run_experiment(folder_structure, trial_number, **kwargs):
+    run_experiment_obj = RunExperiment(folder_structure, trial_number, **kwargs)
