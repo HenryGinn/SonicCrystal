@@ -41,15 +41,18 @@ https://github.com/HenryGinn/hgutilities/tree/main/hgutilities/plotting
 
 import os
 from hgutilities import plotting
+from hgutilities.utils.paths import make_folder
 from tools import read_from_path
 
-# Where the sweep data is saved and where the plotting folder will be saved
-base_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\CapacitativeDirectMeasurement"
+data_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/DataSets/2023-06-16"
+plots_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/Plots/2023-06-16"
 
-for file_name in os.listdir(base_path)[20:70]:
+make_folder(plots_path)
+
+for file_name in os.listdir(data_path)[20:22]:
     if file_name not in ["Parameters.txt", "Plots"]:
         # Extracting the sweep data into a dictionary
-        path = os.path.join(base_path, file_name)
+        path = os.path.join(data_path, file_name)
         data_dict = read_from_path(path)
 
         # Data to plot
@@ -66,6 +69,5 @@ for file_name in os.listdir(base_path)[20:70]:
 
         # Creating plot and saving
         title = os.path.splitext(file_name)[0]
-        results_path = os.path.join(base_path, "Plots")
-        plotting.create_figures(lines_objects, path=results_path, output="Save",
+        plotting.create_figures(lines_objects, path=plots_path, output="Save",
                                 title=title, format="png", axis_fontsize=14, suptitle_fontsize=18)
