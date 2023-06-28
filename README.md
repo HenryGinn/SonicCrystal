@@ -1,10 +1,52 @@
-# CryostatInterface
-A set of programs used to interact with the devices that work with the cryostat
+# SonicCrystal
+A set of programs used to interact with the MFIA in the sonic crystal experiment.
 
+Documentation for each experiment can be found in a file called "Experiments Log" in the base folder where the experiment data is saved (SonicCrystal)
+
+1. [Conventions and Notes](#conventions-and-notes)
+1. [Tools](#tools)
+    1. [Quick Plot](#quick-plot)
+    1. [File Naming System](#file-naming-system)
+    1. [Reading and Writing to Files](#reading-and-writing-to-files)
+    1. [Peak Finder](#peak-finder)
+    1. [Run Experiment](#run-experiment)
+
+## Conventions and Notes
+
+- Sweep numbers may be used to index into lists to define settings. For this reason they should be 0 indexed.
+- Demod numbers should not be 0 indexed as they refer to one of the demodulators and are not indexes.
+- Trial numbers should not be used as indexes for anything, except in post processing. Their main purpose is for human readability to distinguish between trials, so they should start from 1.
+- All scripts should have the date in yyyy_mm_dd__Description format so that it is clear what experiment it is used for. This should be kept consistent with the experiment documentation.
+- Every experiment should be done in a new script, even if it is an exact copy apart from a few parameters being changed. This is to help keep track of what we have done. It also applies to plotting scripts.
+- Code intended for plotting and measuring should be in separate scripts. This is for two reasons: firstly, the two scripts can be run simultaneously without interferring with the other, and secondly, it keeps the measurement code simple, and reduces possibilities of it crashing. If the data needs to be viewed, the plotting code should be run from a separate shell and read the files that the measurement script has already produced.
+
+Warning: when measurement code is being ran, be careful what shell you are running scripts from. If you are unsure, close the script you wanted to run, open a new IDLE shell, and open the script from that new shell. If you are still unsure, do not run the script. Check that the measurement script is still running afterwards.
+
+## Tools
+
+These are a collection of programs used to simplify and standardise the collection and plotting of data
+
+1. [Quick Plot](#quick-plot)
 1. [File Naming System](#file-naming-system)
 1. [Reading and Writing to Files](#reading-and-writing-to-files)
 1. [Peak Finder](#peak-finder)
 1. [Run Experiment](#run-experiment)
+
+## Quick Plot
+
+This is from the hgutilities module, not the "tools" folder. It is designed to take in a path and produce a plot. It gives very little control and the aim is to get an idea of what the data looks like very fast. The format of the files with the data are expected to have a single line header with the names of the variables and these will be used as the axis labels. The columns are assumed to be separated by tabs, but this is controllable with the `separator` keyword. The independent and dependent variables are assumed to be the 0'th and 1st columns, but these can be changed with the `x` and `y` keyword arguments by passing in the 0 based index of the column number. The main control is given by the form of the input of the data to plot, detailed below. Use of the `subplots` keyword argument can also be helpful for controlling the number of subplots on each figure.
+
+- Path to file. A single plot with a single line on it.
+- Path to folder with `one_line_per_plot=True`. Each file within the folder will be plotted on it's own subplot.
+- Path to folder with `one_line_per_plot=False`. All files within the folder will be plotted on one subplot.
+- List of paths to files with `one_line_per_plot=True`. Each file plotting on it's own subplot.
+- List of paths to files with `one_line_per_plot=False`. All files plotting on one subplot.
+- Two dimensional list of paths to files. Each outer list corresponds to one subplot.
+- List of paths to folders. The contents of each folder will be plotted on one subplot each.
+
+If a dictionary is given in place of a list/tuple/array then the values will be used and not the keys.
+
+Any keyword arguments will be fed into the figures object, figure object, line object, and lines object classes of hgutilities so much of that functionality remains, although the values for those keyword arguments will be set for every instance of each object. If finer control is required, this feature should not be used.
 
 ## File Naming System
 
