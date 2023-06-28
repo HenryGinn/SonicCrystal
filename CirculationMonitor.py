@@ -46,9 +46,9 @@ sweeper.set('gridnode', '/dev6641/oscs/0/freq')
 
 # Preparing for sweeping
 base_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\CapacitativeDirectMeasurement\\2023-06-16"
-sweep_number = 1
+sweep_number = 0
 
-voltages_and_biases = [(0.5, 0), (0.5, 0.5), (0.5, 1), (0, 1.5),
+voltages_and_biases = [(0.5, 0), (0.5, 0.5), (0.5, 1), (0.5, 1.5),
                        (1, 0), (1, 0.5), (1, 1),
                        (1.5, 0), (1.5, 0.5),
                        (2, 0)]
@@ -85,7 +85,7 @@ while True:
                   if key not in params}
 
     # Saving the parameters to a file
-    if sweep_number == 1:
+    if sweep_number == 0:
         path = os.path.join(base_path, "Parameters.txt")
         with open(path, "w") as file:
             for key, value in parameters.items():

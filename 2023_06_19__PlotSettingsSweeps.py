@@ -47,6 +47,7 @@ from hgutilities.utils.paths import make_folder
 from tools import read_from_path
 from tools import read_file_name
 
+
 def get_paths_grouped_by_setting_sweep(group_size):
     paths = get_paths()
     paths_dict = get_paths_dict(paths)
@@ -78,45 +79,59 @@ def get_path_groups_unsorted(paths, paths_dict, group_size):
     return path_groups
 
 
-def create_figure(index, path_group, lines_obj_function, name):
-    lines_objects = [lines_obj_function(sweep_path)
-                     for sweep_path in path_group]
-    suptitle = f"Effect of Different Settings on {name} Precision {index + 1}"
-    file_name = f"Measurement_{name}__Index_{index + 1}"
+def create_figures(index, path_group):
+    lines_objects = [line_obj_function(path_group)
+                     for line_obj_function in line_obj_functions]
+    suptitle = f"Effect of Different Settings on Measurement Precision {index + 1}"
+    file_name = f"GroupIndex_{index + 1}"
     plotting.create_figures(lines_objects, axis_fontsize=12, suptitle=suptitle,
-                            title_fontsize=15, suptitle_fontsize=20, output="Save",
-                            base_path=plots_path, file_name=file_name, format="png")
+                            title_fontsize=15, suptitle_fontsize=20, output="Show",
+                            base_path=plots_path, file_name=file_name, format="png",
+                            universal_legend=True)
     
-def get_lines_obj_resistance(sweep_path):
-    lines_obj = get_lines_obj(sweep_path, "param0")
+def get_lines_obj_resistance(path_group):
+    lines_obj = get_lines_obj(path_group, "param0")
     lines_obj.y_label = "Resistance"
     return lines_obj
 
-def get_lines_obj_capacitance(sweep_path):
-    lines_obj = get_lines_obj(sweep_path, "param1")
+def get_lines_obj_capacitance(path_group):
+    lines_obj = get_lines_obj(path_group, "param1")
     lines_obj.y_label = "Capacitance"
     lines_obj.plot_type = "semilogy"
     return lines_obj
 
-def get_lines_obj_absz(sweep_path):
-    lines_obj = get_lines_obj(sweep_path, "absz")
+def get_lines_obj_absz(path_group):
+    lines_obj = get_lines_obj(path_group, "absz")
     lines_obj.y_label = "|Z|"
     lines_obj.plot_type = "semilogy"
     return lines_obj
     
-def get_lines_obj_phasez(sweep_path):
-    lines_obj = get_lines_obj(sweep_path, "phasez")
+def get_lines_obj_phasez(path_group):
+    lines_obj = get_lines_obj(path_group, "phasez")
     lines_obj.y_label = "arg(Z)"
     return lines_obj
 
+def get_lines_obj_capacitance_stddev(path_group):
+    lines_obj = get_lines_obj(path_group, "param1stddev")
+    lines_obj.y_label = "Capacitance Standard Deviation"
+    lines_obj.plot_type="semilogy"
+    return lines_obj
 
-def get_lines_obj(sweep_path, parameter_name):
-    frequency, values = get_frequency_and_values(sweep_path, parameter_name)
-    line_obj = plotting.line(frequency, values)
-    title = get_title(sweep_path)
-    lines_obj = plotting.lines(line_obj, x_label="Frequency", title=title,
+
+def get_lines_obj(path_group, parameter_name):
+    line_objects = [get_line_obj(sweep_path, parameter_name)
+                    for sweep_path in path_group
+                    if "DriveVoltage_0_" not in sweep_path]
+    lines_obj = plotting.lines(line_objects, x_label="Frequency",
                                xlim_lower=0, xlim_upper=5e6)
     return lines_obj
+
+def get_line_obj(sweep_path, parameter_name):
+    frequency, values = get_frequency_and_values(sweep_path, parameter_name)
+    file_name_data = read_file_name(os.path.split(sweep_path)[1])
+    label = f"Drive_{file_name_data['DriveVoltage']}__Bias_{file_name_data['BiasVoltage']}"
+    line_obj = plotting.line(frequency, values, label=label)
+    return line_obj
 
 def get_frequency_and_values(path, parameter):
     data_dict = read_from_path(path)
@@ -131,8 +146,11 @@ def get_title(sweep_path):
     return title
 
 
-data_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/DataSets/2023-06-16"
-plots_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/Plots/2023-06-16"
+#data_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/DataSets/2023-06-16"
+#plots_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/Plots/2023-06-16"
+
+data_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\CapacitativeDirectMeasurement\\2023-06-16"
+plots_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\Plots\\2023-06-16"
 make_folder(plots_path)
 
 paths_grouped_by_setting_sweep = get_paths_grouped_by_setting_sweep(10)
@@ -140,11 +158,10 @@ paths_grouped_by_setting_sweep = get_paths_grouped_by_setting_sweep(10)
 ignore_first = 100
 
 line_obj_functions = [get_lines_obj_resistance,
-                      get_lines_obj_capacitance,
                       get_lines_obj_absz,
-                      get_lines_obj_phasez]
-names = ["Resistance", "Capacitance", "AbsZ", "PhaseZ"]
+                      get_lines_obj_phasez,
+                      get_lines_obj_capacitance,
+                      get_lines_obj_capacitance_stddev]
 
 for index, path_group in enumerate(paths_grouped_by_setting_sweep):
-    for line_obj_function, name in zip(line_obj_functions, names):
-        create_figure(index, path_group, line_obj_function, name)
+    create_figures(index, path_group)
