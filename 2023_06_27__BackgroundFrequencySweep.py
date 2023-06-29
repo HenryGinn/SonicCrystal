@@ -3,9 +3,8 @@ import os
 import datetime
 
 import zhinst.core
-import numpy as np
 
-from tools import *
+from tools import get_file_name, save_to_path
 
 # Setting up the device
 daq = zhinst.core.ziDAQServer('192.168.103.198', 8004, 6)
