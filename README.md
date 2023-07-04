@@ -10,6 +10,8 @@ Documentation for each experiment can be found in a file called "Experiments Log
     1. [Reading and Writing to Files](#reading-and-writing-to-files)
     1. [Peak Finder](#peak-finder)
     1. [Run Experiment](#run-experiment)
+    1. [Run Experiment V2](#run-experiment-v2)
+1. [Time Estimator](#time-estimator)
 
 ## Conventions and Notes
 
@@ -167,3 +169,11 @@ power: 25, trial: 2, detuning: 1
 ```
 
 The path to the folder that has been created will also be set as a global variable and is called "base_path". At the root of this folder tree is a folder with the date when the script is run in the format yyyy_mm_dd. This folder is within the "CapacitanceExperiment" folder inside "Experiments Data" folder. This can be changed by passing a path into the `run_experiment` function with the `base_path` keyword argument.
+
+## Run Experiment V2
+
+The aim of this is to specify what settings are being used, what the folder structure is, what is changing within each folder, and how the frequency changes within each sweep. A desired feature is also to give an estimate for the time taken.
+
+## Time Estimator
+
+This is an experiment done to produce data on how each of the settings affects the time taken. It is assumed to be the case that the time dependence on each setting is independent from the other settings apart from from when their is an onbvious dependence. We will look for a function which is a product of each of these functions. Our method will be to start with some baseline settings, and then change each of the settings one by one and fit the points, ensuring it goes through the baseline. In the advanced options of the sweeper, we will ensure that the time constant is always the limiting factor in the section about averaging. To establish a baseline precisely we will do several trials and average them. This needs to be more precise than the other measurements because we are ensuring that all functions pass through this point. We will choose a baseline of 1 V, 100 points, and a bandwidth of 1 Hz. We will repeat the experiment for running just the oscillator, just the demods, and with both together. This will be used in conjuction with the "Run Experiment V2" script to give an estimate for the time.
