@@ -6,6 +6,10 @@ import zhinst.core
 
 from tools import get_file_name, save_to_path
 
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal\\"
+             "2023-06-27__BackgroundFrequencySweep")
+
+
 # Setting up the device
 daq = zhinst.core.ziDAQServer('192.168.103.198', 8004, 6)
 daq.setInt('/dev6641/imps/0/mode', 1) # 0: 4 terminal, 1: 2 terminal
@@ -29,8 +33,8 @@ sweeper.set('samplecount', 50001) # The number of points in a sweep
 
 
 # Sweeper bandwidth and other settings
-sweeper.set('bandwidth', 1)
-sweeper.set('maxbandwidth', 500)
+sweeper.set('bandwidth', 1) # This is for a different mode we are not using
+sweeper.set('maxbandwidth', 20)
 sweeper.set('bandwidthoverlap', 1)
 sweeper.set('order', 8)
 sweeper.set('omegasuppression', 80)
@@ -47,9 +51,6 @@ sweeper.set('averaging/tc', 15)
 
 # Settings I do not understand
 sweeper.set('gridnode', '/dev6641/oscs/0/freq')
-
-# Preparing for sweeping
-base_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\2023-06-27__BackgroundFrequencySweep"
 
 for sweep_number in range(10, 40):
     # Progress indicator

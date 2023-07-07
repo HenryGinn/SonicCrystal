@@ -87,7 +87,7 @@ def create_figures(index, path_group):
     plotting.create_figures(lines_objects, axis_fontsize=12, suptitle=suptitle,
                             title_fontsize=15, suptitle_fontsize=20, output="Show",
                             base_path=plots_path, file_name=file_name, format="png",
-                            universal_legend=True)
+                            universal_legend=False)
     
 def get_lines_obj_resistance(path_group):
     lines_obj = get_lines_obj(path_group, "param0")
@@ -149,8 +149,8 @@ def get_title(sweep_path):
 #data_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/DataSets/2023-06-16"
 #plots_path = "/home/henry/Documents/Other Programming/Physics Internship/SonicCrystal/Plots/2023-06-16"
 
-data_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\CapacitativeDirectMeasurement\\2023-06-16"
-plots_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\Plots\\2023-06-16"
+data_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\2023_06_16__CapacitativeDirectMeasurement"
+plots_path = "D:\\Documents\\Experiments Data\\SonicCrystal\\Plots\\2023_06_16"
 make_folder(plots_path)
 
 paths_grouped_by_setting_sweep = get_paths_grouped_by_setting_sweep(10)
