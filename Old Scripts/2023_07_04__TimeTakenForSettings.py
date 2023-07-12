@@ -106,8 +106,8 @@ def subscribe_demodulators():
     sweeper.subscribe('/dev6641/demods/2/sample')
     sweeper.subscribe('/dev6641/demods/3/sample')
 
-sample_counts = [1000, 2500, 5000, 10000, 20000]
-max_bandwidths = [1, 2, 5, 10, 20]
+sample_counts = [50000]
+max_bandwidths = [1]
 
 oscillator = True
 demodulators = True

@@ -169,11 +169,3 @@ power: 25, trial: 2, detuning: 1
 ```
 
 The path to the folder that has been created will also be set as a global variable and is called "base_path". At the root of this folder tree is a folder with the date when the script is run in the format yyyy_mm_dd. This folder is within the "CapacitanceExperiment" folder inside "Experiments Data" folder. This can be changed by passing a path into the `run_experiment` function with the `base_path` keyword argument.
-
-## Run Experiment V2
-
-The aim of this is to specify what settings are being used, what the folder structure is, what is changing within each folder, and how the frequency changes within each sweep. A desired feature is also to give an estimate for the time taken.
-
-## Time Estimator
-
-This is an experiment done to produce data on how each of the settings affects the time taken. We perform a sweep over a range of sample counts with a fixed max bandwidth to determine the sample count dependence, and similarly with a range of max bandwidths and a fixed sample count. We do several trials of this and take the mean, and computing the standard deviation to ensure our data is precise. We then do a linear regression to find the coefficients as we know the dependence on sample count and max bandwidth is approximately linear and inverse linear respectively, and we multiply these functions together. We use a reliable baseline to normalise this function to get our final answer. We repeat this with just the oscillator, just the demodulators, and with both to see if there is any difference.
