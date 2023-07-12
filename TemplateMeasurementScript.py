@@ -20,7 +20,7 @@ date = datetime.now().strftime("%Y_%m_%d")
 
 start_frequency = 250000
 stop_frequency = 2000000
-resolution = 5      
+resolution = 5
 measurements_per_sweep = 50000
 
 bias_voltage = 0
@@ -156,24 +156,24 @@ def add_to_frequencies_initial(frequencies, leftover_measurements):
     if leftover_measurements == 0:
         frequencies[-1][1] += resolution
     else:
-        frequencies.append([frequencies[-1][1] + resolution, stop_frequency])
+        frequencies += [[stop_frequency - leftover_measurements*resolution, stop_frequency]]
 
 def sweeps_to_be_taken_message():
-    print(f"{len(sweep_frequencies)} sweeps to be taken:")
+    print(f"{len(sweep_frequencies)} sweep{'s'*(len(sweep_frequencies) != 1)} to be taken:")
     for start_sweep_frequency, stop_sweep_frequency in sweep_frequencies:
         print(f"Start: {start_sweep_frequency}, stop: {stop_sweep_frequency}")
     print("")
 
-def time_taken_message(trials_taken=1):
-    time_taken = get_time_taken(trials_taken)
+def time_taken_message():
+    first_sweep = time.time() + get_sweep_time(sweep_frequencies[0])
+    time_taken = get_time_taken()
     finish_time = time.time() + time_taken
-    print_time_taken_message(time_taken, finish_time)
+    print_time_taken_message(first_sweep, time_taken, finish_time)
 
-def get_time_taken(trials_taken):
-    time_per_trial = sum([get_sweep_time(frequency_limits)
-                          for frequency_limits in sweep_frequencies])
-    time_per_trial = max(1, time_per_trial)
-    time_taken = time_per_trial * trials_taken
+def get_time_taken():
+    time_taken = sum([get_sweep_time(frequency_limits)
+                      for frequency_limits in sweep_frequencies])
+    time_taken = max(1, time_taken)
     return time_taken
 
 def get_sweep_time(frequency_limits):
@@ -182,11 +182,13 @@ def get_sweep_time(frequency_limits):
             * (1 + 57/max_bandwidth - 626/5*1/max_bandwidth**2
                + 595/max_bandwidth**3 - 878/max_bandwidth**4 + 410/max_bandwidth**5))
 
-def print_time_taken_message(time_taken, finish_time):
+def print_time_taken_message(first_sweep, time_taken, finish_time):
+    first_sweep_finish_string = datetime.fromtimestamp(first_sweep).strftime('%H:%M:%S')
     time_taken_string = datetime.fromtimestamp(time_taken).strftime('%H:%M:%S')
     finish_time_string = datetime.fromtimestamp(finish_time).strftime("%Y_%m_%d %H:%M:%S")
-    print(f"Time until finish: {time_taken_string}\n"
-          f"Finish time:       {finish_time_string}\n")
+    print(f"First sweep finish: {first_sweep_finish_string}\n"
+          f"Time until finish:  {time_taken_string}\n"
+          f"Finish time:        {finish_time_string}\n")
 
 
 # Running the sweeper
