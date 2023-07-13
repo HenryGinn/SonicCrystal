@@ -15,7 +15,7 @@ from tools import save_to_path, get_file_name
 
 # Use pascal case for experiment description
 # ThisIsAnExampleOfPascalCase
-experiment_description = "Test"
+experiment_description = 
 date = datetime.now().strftime("%Y_%m_%d")
 
 start_frequency = 250000
@@ -291,8 +291,6 @@ demod_parameters = ["frequency", "r", "phase", "x", "y",
 sweep_frequencies = get_sweep_frequencies()
 sweeps_to_be_taken_message()
 time_taken_message()
-
-input()
 
 daq.setDouble('/dev6641/imps/0/bias/value', bias_voltage)
 daq.setDouble('/dev6641/imps/0/output/amplitude', voltage)
