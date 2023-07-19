@@ -306,25 +306,31 @@ sweep_frequencies = get_sweep_frequencies()
 sweeps_to_be_taken_message()
 time_taken_message()
 
-daq.setDouble('/dev6641/imps/0/bias/value', bias_voltage)
-daq.setDouble('/dev6641/imps/0/output/amplitude', voltage)
-sweeper.set('maxbandwidth', max_bandwidth)
+# Running a small sweep to record the metadata
+daq.setDouble('/dev6641/imps/0/bias/value', ) # Bias voltage
+daq.setDouble('/dev6641/imps/0/output/amplitude', ) # Drive voltage
+sweeper.set('maxbandwidth', max_bandwidth) # Max bandwidth
 save_metadata()
 sweeper.set('samplecount', points_per_batch)
 
-for sweep_number in range(len(sweep_frequencies)):
+for SETTING in SETTINGS:
+    
+    daq.setDouble('/dev6641/imps/0/bias/value', bias_voltage)
+    daq.setDouble('/dev6641/imps/0/output/amplitude', voltage)
 
-    # Running sweep
-    set_frequencies(sweep_number)
-    progress_indicator(sweep_number)
-    subscribe()
-    run_sweep()
+    for sweep_number in range(len(sweep_frequencies)):
 
-    # Extracting results
-    sweeper_results = sweeper.read()
-    impedance_results = get_impedance_results(sweeper_results)
-    demod_results = get_demod_results(sweeper_results)
+        # Running sweep
+        set_frequencies(sweep_number)
+        progress_indicator(sweep_number)
+        subscribe()
+        run_sweep()
 
-    # Saving results to files
-    save_impedance_results(impedance_results)
-    save_demod_results(demod_results)
+        # Extracting results
+        sweeper_results = sweeper.read()
+        impedance_results = get_impedance_results(sweeper_results)
+        demod_results = get_demod_results(sweeper_results)
+
+        # Saving results to files
+        save_impedance_results(impedance_results)
+        save_demod_results(demod_results)

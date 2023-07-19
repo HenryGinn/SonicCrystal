@@ -1,3 +1,13 @@
+"""
+This script is meant to be copy and pasted into a new script for
+each new experiment. Do not tailor this script for a specific experiment.
+If you want a template that fits the new experiment, make a new template.
+
+The purpose of this script is to take the impedance data and create a figure
+where a single parameter is shown against frequency. If the data has been
+split over multiple files, that data is combined and shown on one plot.
+"""
+
 import os
 
 import hgutilities.plotting as plotting
@@ -30,6 +40,9 @@ def get_line_obj():
 
 title = f"{folder_name} Impedance"
 line_objects = [get_line_obj()]
+
+# If all the lines are desired to be the same colour, add
+# a value for the "color" keyword argument in this line.
 lines_objects = plotting.lines(line_objects, legend=True)
 plotting.create_figures(lines_objects, title=title,
                         output="Both", base_path=base_path, plots_folder=True)

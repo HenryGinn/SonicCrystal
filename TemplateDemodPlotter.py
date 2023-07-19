@@ -1,3 +1,14 @@
+"""
+This script is meant to be copy and pasted into a new script for
+each new experiment. Do not tailor this script for a specific experiment.
+If you want a template that fits the new experiment, make a new template.
+
+The purpose of this script is to take the demodulator data and create
+a figure where all the demods are on the same plot, and a single parameter
+is shown against frequency. If the data for each demod has been split over
+multiple files, that data is combined and shown on one plot.
+"""
+
 import os
 
 import hgutilities.plotting as plotting
@@ -7,7 +18,7 @@ from hgutilities.utils import combine_files
 year = "2023"
 month = "07"
 day =
-description =
+description = 
 
 # Parameter names
 # frequency, r, phase, x, y, rstddev,
@@ -33,6 +44,11 @@ def get_line_obj(demod_path):
 
 title = f"{folder_name} Demods"
 line_objects = [get_line_obj(demod_path) for demod_path in demod_paths]
-lines_objects = plotting.lines(line_objects, legend=True)
+
+# If all the lines are desired to be the same colour, add
+# a value for the "color" keyword argument in this line.
+lines_objects = plotting.lines(line_objects, legend=True,
+                               x_label="Frequency (Hz)", y_label=parameter)
+
 plotting.create_figures(lines_objects, title=title,
                         output="Both", base_path=base_path, plots_folder=True)
