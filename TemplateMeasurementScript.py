@@ -211,6 +211,8 @@ def set_frequencies(sweep_number):
     sweep_start_frequency, sweep_stop_frequency = sweep_frequencies[sweep_number]
     sweeper.set('start', sweep_start_frequency)
     sweeper.set('stop', sweep_stop_frequency)
+    sample_count = (sweep_stop_frequency - sweep_start_frequency)/resolution + 1
+    sweeper.set('samplecount', sample_count)
 
 def progress_indicator(sweep_number):
     sweep_time = datetime.now().strftime("%Y_%m_%d %H:%M:%S")
@@ -310,7 +312,6 @@ daq.setDouble('/dev6641/imps/0/bias/value', bias_voltage)
 daq.setDouble('/dev6641/imps/0/output/amplitude', voltage)
 sweeper.set('maxbandwidth', max_bandwidth)
 save_metadata()
-sweeper.set('samplecount', points_per_batch)
 
 for sweep_number in range(len(sweep_frequencies)):
 

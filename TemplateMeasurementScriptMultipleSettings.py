@@ -47,6 +47,8 @@ max_bandwidth = 30
 # Output folder
 base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\"
              f"Raw Data\\{date}__{description}")
+impedance_path = os.path.join(base_path, "Impedance")
+demod_paths = [os.path.join(base_path, f"Demod {i+1}") for i in range(4)]
 make_folder(base_path)
 print(f"Output folder: {base_path}\n")
 
@@ -204,6 +206,11 @@ def print_time_taken_message(first_sweep, time_taken, finish_time):
           f"Time until finish:  {time_taken_string}\n"
           f"Finish time:        {finish_time_string}\n")
 
+def get_finish_time(sweep_index):
+    time_taken = get_sweep_time(sweep_frequencies[sweep_index])
+    finish_time = time.time() + time_taken
+    return datetime.fromtimestamp(finish_time).strftime("%Y_%m_%d %H:%M:%S")
+
 
 # Running the sweeper
 
@@ -211,21 +218,24 @@ def set_frequencies(sweep_number):
     sweep_start_frequency, sweep_stop_frequency = sweep_frequencies[sweep_number]
     sweeper.set('start', sweep_start_frequency)
     sweeper.set('stop', sweep_stop_frequency)
+    sample_count = (sweep_stop_frequency - sweep_start_frequency)/resolution + 1
+    sweeper.set('samplecount', sample_count)
 
 def progress_indicator(sweep_number):
     sweep_time = datetime.now().strftime("%Y_%m_%d %H:%M:%S")
-    print(f"Sweep started: {sweep_time}, ({start_frequency}, {stop_frequency})")
+    finish_time = get_finish_time(sweep_number)
+    print(f"Sweep started: {sweep_time}, ({start_frequency}, {stop_frequency}), "
+          f"Finish time: {finish_time}")
 
 def subscribe():
     sweeper.subscribe('/dev6641/imps/0/sample')
     subscripe_to_demods()
 
 def subscripe_to_demods():
-    if include_demods:
-        sweeper.subscribe('/dev6641/demods/0/sample')
-        sweeper.subscribe('/dev6641/demods/1/sample')
-        sweeper.subscribe('/dev6641/demods/2/sample')
-        sweeper.subscribe('/dev6641/demods/3/sample')
+    sweeper.subscribe('/dev6641/demods/0/sample')
+    sweeper.subscribe('/dev6641/demods/1/sample')
+    sweeper.subscribe('/dev6641/demods/2/sample')
+    sweeper.subscribe('/dev6641/demods/3/sample')
 
 def run_sweep():
     sweeper.execute()
