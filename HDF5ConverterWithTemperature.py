@@ -17,7 +17,7 @@ This program is based off HDF5Converter. A file with the temperature log
 that contains the time period where the measurements were taken is provided.
 When the arrays are one dimensional a column for the temperature is added.
 These values are interpolated, and as the temperature is only taken every
-five seconds there can be long sequences of equal temperattures.
+five seconds there can be long sequences of equal temperatures.
 """
 
 import os
@@ -36,7 +36,7 @@ from hgutilities.utils import read_from_path
 # The temperature path gives the location of the temperature log
 # file that was taken from FridgeDaddy.
 # This program assumes that the file has been renamed to "Temperature.txt".
-base_path = "D:\\Documents\\Experiments Data\\SonicCrystal2\\Processed Data\\
+base_path = "D:\\Documents\\Experiments Data\\SonicCrystal3\\Processed Data\\
 source_path = os.path.join(base_path, "sweep_00000.h5")
 temperature_path = os.path.join(base_path, "Temperature.txt")
 

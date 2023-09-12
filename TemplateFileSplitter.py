@@ -5,6 +5,7 @@ If you want a template that fits the new experiment, make a new template.
 
 If the data from an experiment has been put into very large files, it may
 be desired that they are split up into smaller ones. This program does that.
+Its main purpose is for data attained from the plotter section of LabOne.
 """
 
 import os
@@ -27,7 +28,7 @@ data_separator =
 
 # Source and output folder
 folder_name = f"{year}_{month}_{day}__{description}"
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\"
              f"Processed Data\\{folder_name}\\Data")
 source_path = os.path.join(base_path, "Big Files", f"{source_file_name}.txt")
 output_path = os.path.join(base_path, "Split Files")

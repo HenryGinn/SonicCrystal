@@ -8,14 +8,19 @@ class RunExperiment():
 
     def __init__(self, folder_structure, trial_number, **kwargs):
         defaults.kwargs(self, kwargs)
-        self.folder_structure = folder_structure
-        self.trial_number = trial_number
+        self.set_attributes(folder_structure, trial_number)
         self.set_experiment_path()
         self.set_code()
         self.run_experiment()
 
+    def set_attributes(self, folder_structure, trial_number):
+        self.folder_structure = folder_structure
+        self.trial_number = trial_number
+        self.experiment_script_path = os.path.join(self.base_path,
+                                                   self.experiment_script_name)
+
     def set_code(self):
-        with open("Experiment.py", "r") as file:
+        with open(self.experiment_script_path, "r") as file:
             self.code = "".join([line for line in file])
 
     def set_experiment_path(self):

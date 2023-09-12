@@ -6,7 +6,8 @@ If you want a template that fits the new experiment, make a new template.
 The purpose of this script is to take the demodulator data and create
 a figure where all the demods are on the same plot, and a single parameter
 is shown against frequency. If the data for each demod has been split over
-multiple files, that data is combined and shown on one plot.
+multiple files (for example with large sweeps), that data is combined and
+shown on one plot.
 """
 
 import os
@@ -27,7 +28,7 @@ description =
 parameter = "r"
 
 folder_name = f"{year}_{month}_{day}__{description}"
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\Processed Data"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\Processed Data"
              f"\\{folder_name}\\Data")
 
 demod_paths = [os.path.join(base_path, folder_name)

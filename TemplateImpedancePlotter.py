@@ -5,11 +5,8 @@ If you want a template that fits the new experiment, make a new template.
 
 The purpose of this script is to take the impedance data and create a figure
 where a single parameter is shown against frequency. If the data has been
-split over multiple files, that data is combined and shown on one plot.
-"""
-
-"""
-This script is based on TemplateImpedancePlotter
+split over multiple files (for very large sweeps for example), that data
+is combined and shown on one plot.
 """
 
 import os
@@ -32,7 +29,7 @@ description =
 parameter = "param1"
 
 folder_name = f"{year}_{month}_{day}__{description}"
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\Processed Data"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\Processed Data"
              f"\\{folder_name}\\28 Cooling Down\\")
 data_path = os.path.join(base_path, "Data", "Impedance")
 

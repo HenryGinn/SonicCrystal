@@ -6,6 +6,7 @@ If you want a template that fits the new experiment, make a new template.
 This takes data from a collection of files and reduces the resolution.
 The output is put into a single file, and the filtering works by taking
 an average of values within a window (not a moving window).
+Currently the average used is the mean.
 """
 
 import os
@@ -32,7 +33,7 @@ lines_to_ignore_at_start_of_file = 4
 
 # Source and output folder
 folder_name = f"{year}_{month}_{day}__{description}"
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\"
              f"Processed Data\\{folder_name}\\Data")
 source_path = os.path.join(base_path, "Big Files", f"{source_file_name}.txt")
 output_path = os.path.join(base_path, "Filtered Files", f"{source_file_name}.txt")

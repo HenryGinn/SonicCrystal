@@ -8,6 +8,8 @@ be made to do what you want if it is sufficiently simple. Give it a path
 or list of paths and it will attempt to plot it somewhat sensibly.
 If this doesn't work then do not try and poke around until it does,
 it is recommended that you start from scratch and do not use this.
+
+For more information see the Quick Plot subsection of Tools in the README.
 """
 
 import hgutilities.plotting as plotting
@@ -37,7 +39,7 @@ description =
 
 column_index = 1
 
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\Processed Data"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\Processed Data"
              f"\\{year}_{month}_{day}__{description}\\Data\\")
 
 # If all the lines are desired to be the same colour, add

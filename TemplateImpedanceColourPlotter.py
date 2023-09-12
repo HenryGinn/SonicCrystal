@@ -10,10 +10,6 @@ split over multiple files, that data is combined and shown on one plot.
 This script is based on TemplateImpedancePlotter
 """
 
-"""
-This script is based on TemplateImpedanceColourPlotter
-"""
-
 import os
 
 import numpy as np
@@ -36,7 +32,7 @@ subfolder = "28 Cooling Down Test"
 parameter = "param1"
 
 folder_name = f"{year}_{month}_{day}__{description}"
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\Processed Data"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\Processed Data"
              f"\\{folder_name}\\{subfolder}")
 data_path = os.path.join(base_path, "Data", "Impedance")
 

@@ -11,10 +11,6 @@ multiple files, that data is combined and shown on one plot.
 This script is based on TemplateDemodPlotter
 """
 
-"""
-This script is based on TemplateDemodColourPlotter
-"""
-
 import os
 
 import numpy as np
@@ -35,7 +31,7 @@ description = "Circulating"
 parameter = "r"
 
 folder_name = f"{year}_{month}_{day}__{description}"
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\Processed Data"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\Processed Data"
              f"\\{folder_name}")
 data_path = os.path.join(base_path, "Data")
 

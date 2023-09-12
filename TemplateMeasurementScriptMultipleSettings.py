@@ -3,14 +3,10 @@ This script is meant to be copy and pasted into a new script for
 each new experiment. Do not tailor this script for a specific experiment.
 If you want a template that fits the new experiment, make a new template.
 
-This script is for taking a single sweep over a frequency range. It has
-been designed to be easily adjustable and taking high resolution/long
-sweeps. It extracts impedance and demodulator data, but this can be
-changed as needed. Other measurement scripts should use this as a base.
-
-A very small sweep will be done first with the same settings, and all
-the data from this will be saved into a file called "Metadata.txt". For
-the main sweep, only a selection of parameters will be saved.
+This script is based off TemplateMeasurementScript and is very similar.
+It does the same thing but it has been prepared to iterate through several
+settings. Due to the large variability in its intended use, more of the
+structure has deliberately been omitted.
 """
 
 import time
@@ -45,7 +41,7 @@ max_bandwidth = 30
 
 
 # Output folder
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\"
              f"Raw Data\\{date}__{description}")
 impedance_path = os.path.join(base_path, "Impedance")
 demod_paths = [os.path.join(base_path, f"Demod {i+1}") for i in range(4)]

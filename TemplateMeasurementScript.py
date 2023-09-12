@@ -45,7 +45,7 @@ max_bandwidth = 30
 
 
 # Output folder
-base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal2\\"
+base_path = ("D:\\Documents\\Experiments Data\\SonicCrystal3\\"
              f"Raw Data\\{date}__{description}")
 make_folder(base_path)
 print(f"Output folder: {base_path}\n")

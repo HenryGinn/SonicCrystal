@@ -1,3 +1,4 @@
 {
-  "base_path": "D:\\Documents\\Experiments Data\\CapacitanceExperiment"
+  "base_path": "D:\\Documents\\Experiments Data\\SonicCrystal3",
+  "experiment_script_name": "experiment.py"
 }

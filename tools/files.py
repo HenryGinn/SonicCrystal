@@ -1,6 +1,8 @@
 import numpy as np
+from hgutilities.utils import make_file_path
 
 def save_to_path(path, data):
+    make_file_path(path)
     with open(path, "w") as file:
         write_header_to_file(file, data)
         write_columns_to_file(file, data)

@@ -25,7 +25,7 @@ from hgutilities.utils import save_to_path
 # Base path is the directory where the HDF5 file is located
 # The string literal is deliberately unterminated as a reminder
 # to complete the path.
-base_path = "D:\\Documents\\Experiments Data\\SonicCrystal2\\Processed Data\\
+base_path = "D:\\Documents\\Experiments Data\\SonicCrystal3\\Processed Data\\
 source_path = os.path.join(base_path, "sweep_00000.h5")
 destination_path = base_path
 

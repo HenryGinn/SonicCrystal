@@ -7,6 +7,6 @@
   "contraction_ratio": 0.1,
   "plot_results": false,
   "save_results": true,
-  "base_path": "D:\\Documents\\Experiments Data\\CapacitanceExperiment",
+  "base_path": "D:\\Documents\\Experiments Data\\SonicCrystal3\\Raw Data",
   "aspect_ratio": 2
 }
